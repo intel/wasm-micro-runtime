@@ -729,7 +729,7 @@ void
 gc_dump_heap_stats(gc_heap_t *heap)
 {
     os_printf("heap: %p, heap start: %p\n", heap, heap->base_addr);
-    os_printf("total free: %u, current: %u, highmark: %u\n",
+    os_printf("total free: %"PRIu32", current: %"PRIu32", highmark: %"PRIu32"\n",
               heap->total_free_size, heap->current_size, heap->highmark_size);
     os_printf("g_total_malloc=%lu, g_total_free=%lu, occupied=%lu\n",
               g_total_malloc, g_total_free, g_total_malloc - g_total_free);
@@ -772,7 +772,7 @@ gci_dump(gc_heap_t *heap)
             return;
         }
 
-        os_printf("#%d %08x %x %x %d %c %d\n",
+        os_printf("#%d %08"PRIx32" %x %x %d %c %"PRId32"\n",
                   i, (int32)((char*) cur - (char*) heap->base_addr),
                   ut, p, mark, inuse, (int32)hmu_obj_size(size));
 #if BH_ENABLE_GC_VERIFY != 0

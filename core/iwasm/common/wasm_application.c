@@ -423,7 +423,7 @@ wasm_application_execute_func(WASMModuleInstanceCommon *module_inst,
         char *endptr = NULL;
         bh_assert(argv[i] != NULL);
         if (argv[i][0] == '\0') {
-            snprintf(buf, sizeof(buf), "invalid input argument %d", i);
+            snprintf(buf, sizeof(buf), "invalid input argument %"PRId32"", i);
             wasm_runtime_set_exception(module_inst, buf);
             goto fail;
         }
@@ -554,7 +554,7 @@ wasm_application_execute_func(WASMModuleInstanceCommon *module_inst,
                 break;
         }
         if (endptr && *endptr != '\0' && *endptr != '_') {
-            snprintf(buf, sizeof(buf), "invalid input argument %d: %s",
+            snprintf(buf, sizeof(buf), "invalid input argument %"PRId32": %s",
                      i, argv[i]);
             wasm_runtime_set_exception(module_inst, buf);
             goto fail;
@@ -573,7 +573,7 @@ wasm_application_execute_func(WASMModuleInstanceCommon *module_inst,
         switch (type->types[type->param_count + j]) {
             case VALUE_TYPE_I32:
             {
-                os_printf("0x%x:i32", argv1[k]);
+                os_printf("0x%"PRIx32":i32", argv1[k]);
                 k++;
                 break;
             }

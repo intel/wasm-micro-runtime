@@ -2303,7 +2303,7 @@ invoke_wasm_c_api_native(AOTModuleInstance *module_inst, void *func_ptr,
     }
     if (trap) {
         if (trap->message->data) {
-            snprintf(fmt, sizeof(fmt), "%%.%us", (uint32)trap->message->size);
+            snprintf(fmt, sizeof(fmt), "%%.%"PRIu32"s", (uint32)trap->message->size);
             snprintf(module_inst->cur_exception,
                      sizeof(module_inst->cur_exception),
                      fmt, trap->message->data);

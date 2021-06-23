@@ -39,9 +39,10 @@ bh_log(LogLevel log_level, const char *file, int line, const char *fmt, ...)
     s = t % 60;
     mills = (uint32)(usec % 1000);
 
-    snprintf(buf, sizeof(buf), "%02u:%02u:%02u:%03u", h, m, s, mills);
+    snprintf(buf, sizeof(buf), "%02"PRIu32":%02"PRIu32":%02"PRIu32":%03"PRIu32"",
+             h, m, s, mills);
 
-    os_printf("[%s - %X]: ", buf, (uint32)(uintptr_t)self);
+    os_printf("[%s - %"PRIX32"]: ", buf, (uint32)(uintptr_t)self);
 
     if (file)
         os_printf("%s, line %d, ", file, line);
@@ -71,7 +72,7 @@ bh_print_time(const char *prompt)
 
     total_time_ms += curr_time_ms - last_time_ms;
 
-    os_printf("%-48s time of last stage: %u ms, total time: %u ms\n",
+    os_printf("%-48s time of last stage: %"PRIu32" ms, total time: %"PRIu32" ms\n",
               prompt, curr_time_ms - last_time_ms, total_time_ms);
 
     last_time_ms = curr_time_ms;

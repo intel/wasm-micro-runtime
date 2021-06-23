@@ -762,7 +762,7 @@ exit_wrapper(wasm_exec_env_t exec_env, int32 status)
 {
     wasm_module_inst_t module_inst = get_module_inst(exec_env);
     char buf[32];
-    snprintf(buf, sizeof(buf), "env.exit(%i)", status);
+    snprintf(buf, sizeof(buf), "env.exit(%"PRIi32")", status);
     wasm_runtime_set_exception(module_inst, buf);
 }
 
@@ -1015,7 +1015,7 @@ abort_wrapper(wasm_exec_env_t exec_env, int32 code)
 {
     wasm_module_inst_t module_inst = get_module_inst(exec_env);
     char buf[32];
-    snprintf(buf, sizeof(buf), "env.abort(%i)", code);
+    snprintf(buf, sizeof(buf), "env.abort(%"PRIi32")", code);
     wasm_runtime_set_exception(module_inst, buf);
 }
 
@@ -1024,7 +1024,7 @@ abortStackOverflow_wrapper(wasm_exec_env_t exec_env, int32 code)
 {
     wasm_module_inst_t module_inst = get_module_inst(exec_env);
     char buf[32];
-    snprintf(buf, sizeof(buf), "env.abortStackOverflow(%i)", code);
+    snprintf(buf, sizeof(buf), "env.abortStackOverflow(%"PRIi32")", code);
     wasm_runtime_set_exception(module_inst, buf);
 }
 
@@ -1033,7 +1033,7 @@ nullFunc_X_wrapper(wasm_exec_env_t exec_env, int32 code)
 {
     wasm_module_inst_t module_inst = get_module_inst(exec_env);
     char buf[32];
-    snprintf(buf, sizeof(buf), "env.nullFunc_X(%i)", code);
+    snprintf(buf, sizeof(buf), "env.nullFunc_X(%"PRIi32")", code);
     wasm_runtime_set_exception(module_inst, buf);
 }
 

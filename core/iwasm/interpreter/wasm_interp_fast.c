@@ -3456,7 +3456,7 @@ wasm_interp_call_wasm(WASMModuleInstance *module_inst,
     if (argc != function->param_cell_num) {
         char buf[128];
         snprintf(buf, sizeof(buf),
-                 "invalid argument count %d, expected %d",
+                 "invalid argument count %"PRIu32", expected %d",
                  argc, function->param_cell_num);
         wasm_set_exception(module_inst, buf);
         return;
