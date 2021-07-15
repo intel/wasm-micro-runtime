@@ -68,6 +68,15 @@ check_symbol_signature(const WASMType *type, const char *signature)
     if (*p++ != '(')
         return false;
 
+    uint32 param_count = (uint32) (p_end - p);
+    if(p_end[-1]!=')') param_count = param_count - 1;// no return
+    param_count = param_count - 1;// no wrapper 
+    bool params_missing = param_count != (uint32) (type->param_count );
+    if (params_missing){
+        printf("\nparams_missing in WASM function signature! Expected %d, got %d\n", param_count , type->param_count );
+        return false;
+    }
+
     if ((uint32)(p_end - p) < (uint32)(type->param_count + 1))
         /* signatures of parameters, and ')' */
         return false;
@@ -194,7 +203,7 @@ quick_sort_symbols(NativeSymbol* native_symbols, int left, int right)
 
 static void *
 lookup_symbol(NativeSymbol *native_symbols, uint32 n_native_symbols,
-              const char *symbol, const char **p_signature, void **p_attachment)
+              const char *symbol, const char **p_signature, void **p_attachment, bool *use_wrapper)
 {
     int low = 0, mid, ret;
     int high = (int32)n_native_symbols - 1;
@@ -205,6 +214,7 @@ lookup_symbol(NativeSymbol *native_symbols, uint32 n_native_symbols,
         if (ret == 0) {
             *p_signature = native_symbols[mid].signature;
             *p_attachment = native_symbols[mid].attachment;
+            *use_wrapper = native_symbols[mid].use_wrapper;
             return native_symbols[mid].func_ptr;
         }
         else if (ret < 0)
@@ -219,7 +229,7 @@ lookup_symbol(NativeSymbol *native_symbols, uint32 n_native_symbols,
 void*
 wasm_native_resolve_symbol(const char *module_name, const char *field_name,
                            const WASMType *func_type, const char **p_signature,
-                           void **p_attachment, bool *p_call_conv_raw)
+                           void **p_attachment, bool *p_call_conv_raw, bool *p_use_wrapper)
 {
     NativeSymbolsNode *node, *node_next;
     const char *signature = NULL;
@@ -231,12 +241,12 @@ wasm_native_resolve_symbol(const char *module_name, const char *field_name,
         if (!strcmp(node->module_name, module_name)) {
             if ((func_ptr = lookup_symbol(node->native_symbols,
                                           node->n_native_symbols,
-                                          field_name, &signature, &attachment))
+                                          field_name, &signature, &attachment, p_use_wrapper))
                 || (field_name[0] == '_'
                     && (func_ptr = lookup_symbol(node->native_symbols,
                                                  node->n_native_symbols,
                                                  field_name + 1,
-                                                 &signature, &attachment))))
+                                                 &signature, &attachment, p_use_wrapper))))
             break;
         }
         node = node_next;

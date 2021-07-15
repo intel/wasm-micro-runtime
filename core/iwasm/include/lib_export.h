@@ -19,6 +19,8 @@ typedef struct NativeSymbol {
     /* attachment which can be retrieved in native API by
        calling wasm_runtime_get_function_attachment(exec_env) */
     void *attachment;
+    /* prepend wasm_exec_env_t as first argument, todo: merge with WASMFunctionImport */
+    bool use_wrapper; //  prepend wasm_exec_env_t as first argument
 } NativeSymbol;
 
 #define EXPORT_WASM_API(symbol)  {#symbol, (void*)symbol, NULL, NULL}

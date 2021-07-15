@@ -182,6 +182,9 @@ typedef struct WASMFunctionImport {
     /* attachment */
     void *attachment;
     bool call_conv_raw;
+    /* prepend wasm_exec_env_t as first argument, todo: merge with NativeSymbol */
+    bool use_wrapper; 
+
 #if WASM_ENABLE_MULTI_MODULE != 0
     WASMModule *import_module;
     WASMFunction *import_func_linked;

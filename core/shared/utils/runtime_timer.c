@@ -18,7 +18,7 @@ typedef struct _app_timer {
     uint64 expiry;
     bool is_periodic;
 } app_timer_t;
-
+//#pragma "-Wno-typedef-redefinition"
 typedef struct _timer_ctx {
     app_timer_t *app_timers;
     app_timer_t *idle_timers;

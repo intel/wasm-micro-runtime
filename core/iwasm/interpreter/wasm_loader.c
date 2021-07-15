@@ -1058,6 +1058,8 @@ load_function_import(const uint8 **p_buf, const uint8 *buf_end,
     void *linked_attachment = NULL;
     bool linked_call_conv_raw = false;
     bool is_native_symbol = false;
+    bool linked_use_wrapper = true;
+
 
 
     CHECK_BUF(p, p_end, 1);
@@ -1083,7 +1085,9 @@ load_function_import(const uint8 **p_buf, const uint8 *buf_end,
                                              declare_func_type,
                                              &linked_signature,
                                              &linked_attachment,
-                                             &linked_call_conv_raw);
+                                             &linked_call_conv_raw,
+                                             &linked_use_wrapper
+                                             );
     if (linked_func) {
         is_native_symbol = true;
     }
@@ -1112,6 +1116,7 @@ load_function_import(const uint8 **p_buf, const uint8 *buf_end,
     function->signature = linked_signature;
     function->attachment = linked_attachment;
     function->call_conv_raw = linked_call_conv_raw;
+    function->use_wrapper = linked_use_wrapper;
 #if WASM_ENABLE_MULTI_MODULE != 0
     function->import_module = is_native_symbol ? NULL : sub_module;
     function->import_func_linked = is_native_symbol ? NULL : linked_func;
