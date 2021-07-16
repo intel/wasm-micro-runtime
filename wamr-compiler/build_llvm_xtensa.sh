@@ -27,7 +27,7 @@ if [ ! -f bin/llvm-lto ]; then
   cmake ../llvm \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DCMAKE_BUILD_TYPE:STRING="Release" \
-          -DLLVM_TARGETS_TO_BUILD:STRING="X86;ARM;AArch64;Mips" \
+          -DLLVM_TARGETS_TO_BUILD:STRING="X86;ARM;AArch64;Mips;RISCV" \
           -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD:STRING="Xtensa" \
           -DLLVM_BUILD_LLVM_DYLIB:BOOL=OFF \
           -DLLVM_OPTIMIZED_TABLEGEN:BOOL=ON \

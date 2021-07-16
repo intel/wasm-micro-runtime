@@ -1752,6 +1752,7 @@ is_data_section(LLVMSectionIteratorRef sec_itr, char *section_name)
     uint32 relocation_count = 0;
 
     return (!strcmp(section_name, ".data")
+            || !strcmp(section_name, ".sdata")
             || !strcmp(section_name, ".rodata")
             /* ".rodata.cst4/8/16/.." */
             || !strncmp(section_name, ".rodata.cst", strlen(".rodata.cst"))
@@ -2012,6 +2013,8 @@ is_relocation_section_name(char *section_name)
             || !strcmp(section_name, ".rela.literal")
             || !strcmp(section_name, ".rela.data")
             || !strcmp(section_name, ".rel.data")
+            || !strcmp(section_name, ".rela.sdata")
+            || !strcmp(section_name, ".rel.sdata")
             || !strcmp(section_name, ".rela.rodata")
             || !strcmp(section_name, ".rel.rodata")
             /* ".rela.rodata.cst4/8/16/.." */

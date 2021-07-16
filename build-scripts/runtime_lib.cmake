@@ -52,11 +52,6 @@ if (WAMR_BUILD_INTERP EQUAL 1 OR WAMR_BUILD_JIT EQUAL 1)
     include (${IWASM_DIR}/interpreter/iwasm_interp.cmake)
 endif ()
 
-if (WAMR_BUILD_TARGET MATCHES "RISCV.*" AND WAMR_BUILD_AOT EQUAL 1)
-    set (WAMR_BUILD_AOT 0)
-    message ("-- WAMR AOT disabled as it isn't supported by riscv currently")
-endif ()
-
 if (WAMR_BUILD_AOT EQUAL 1)
     include (${IWASM_DIR}/aot/iwasm_aot.cmake)
     if (WAMR_BUILD_JIT EQUAL 1)

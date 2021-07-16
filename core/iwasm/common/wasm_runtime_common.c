@@ -3061,7 +3061,8 @@ typedef union __declspec(intrin_type) __declspec(align(8)) v128 {
     unsigned __int32 m128i_u32[4];
     unsigned __int64 m128i_u64[2];
 } v128;
-#elif defined(BUILD_TARGET_X86_64) || defined(BUILD_TARGET_AMD_64)
+#elif defined(BUILD_TARGET_X86_64) || defined(BUILD_TARGET_AMD_64) \
+      || defined(BUILD_TARGET_RISCV64_LP64D) || defined(BUILD_TARGET_RISCV64_LP64)
 typedef long long v128 __attribute__ ((__vector_size__ (16),
                                        __may_alias__, __aligned__ (1)));
 #elif defined(BUILD_TARGET_AARCH64)

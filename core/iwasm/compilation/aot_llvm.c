@@ -1087,14 +1087,22 @@ static ArchItem valid_archs[] = {
     { "thumbv8r", true },
     { "thumbv8m.base", true },
     { "thumbv8m.main", true },
-    { "thumbv8.1m.main", true }
+    { "thumbv8.1m.main", true },
+    { "riscv32", true},
+    { "riscv64", true}
 };
 
 static const char *valid_abis[] = {
     "gnu",
     "eabi",
     "gnueabihf",
-    "msvc"
+    "msvc",
+    "ilp32",
+    "ilp32f",
+    "ilp32d",
+    "lp64",
+    "lp64f",
+    "lp64d"
 };
 
 static void
@@ -1184,7 +1192,7 @@ aot_create_comp_context(AOTCompData *comp_data,
     char *cpu = NULL, *features, buf[128];
     char *triple_norm_new = NULL, *cpu_new = NULL;
     char *err = NULL, *fp_round= "round.tonearest", *fp_exce = "fpexcept.strict";
-    char triple_buf[32] = {0};
+    char triple_buf[32] = { 0 }, features_buf[128] = { 0 };
     uint32 opt_level, size_level;
     LLVMCodeModel code_model;
     LLVMTargetDataRef target_data_ref;
@@ -1323,6 +1331,14 @@ aot_create_comp_context(AOTCompData *comp_data,
             goto fail;
         }
 
+        /* Set default abi for riscv target */
+        if (arch && !strncmp(arch, "riscv", 5) && !abi) {
+            if (!strcmp(arch, "riscv64"))
+                abi = "lp64d";
+            else
+                abi = "ilp32d";
+        }
+
         if (arch) {
             /* Construct target triple: <arch>-<vendor>-<sys>-<abi> */
             const char *vendor_sys;
@@ -1392,6 +1408,29 @@ aot_create_comp_context(AOTCompData *comp_data,
                     "target isn't specified for cpu %s.", cpu);
             aot_set_last_error(buf);
             goto fail;
+        }
+
+        /* Add module flag and cpu feature for riscv target */
+        if (arch && !strncmp(arch, "riscv", 5)) {
+            LLVMMetadataRef meta_target_abi;
+
+            if (!(meta_target_abi = LLVMMDStringInContext2(comp_ctx->context,
+                                                           abi, strlen(abi)))) {
+                aot_set_last_error("create metadata string failed.");
+                goto fail;
+            }
+            LLVMAddModuleFlag(comp_ctx->module, LLVMModuleFlagBehaviorError,
+                          "target-abi", strlen("target-abi"), meta_target_abi);
+
+            if (!strcmp(abi, "lp64d") || !strcmp(abi, "ilp32d")) {
+                if (features) {
+                    snprintf(features_buf, sizeof(features_buf),
+                             "%s%s", features, ",+d");
+                    features = features_buf;
+                }
+                else
+                    features = "+d";
+            }
         }
 
         if (!features)

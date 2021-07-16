@@ -66,7 +66,7 @@ def main():
         cmd = 'cmake ../llvm \
                 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
                 -DCMAKE_BUILD_TYPE:STRING="Release" \
-                -DLLVM_TARGETS_TO_BUILD:STRING="X86;ARM;AArch64;Mips" \
+                -DLLVM_TARGETS_TO_BUILD:STRING="X86;ARM;AArch64;Mips;RISCV" \
                 -DLLVM_INCLUDE_GO_TESTS=OFF \
                 -DLLVM_INCLUDE_TOOLS=OFF \
                 -DLLVM_INCLUDE_UTILS=OFF \

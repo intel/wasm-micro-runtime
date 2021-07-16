@@ -20,11 +20,14 @@ print_help()
 {
   printf("Usage: wamrc [options] -o output_file wasm_file\n");
   printf("  --target=<arch-name>      Set the target arch, which has the general format: <arch><sub>\n");
-  printf("                            <arch> = x86_64, i386, aarch64, arm, thumb, xtensa, mips.\n");
+  printf("                            <arch> = x86_64, i386, aarch64, arm, thumb, xtensa, mips,\n");
+  printf("                                     riscv64, riscv32.\n");
   printf("                              Default is host arch, e.g. x86_64\n");
   printf("                            <sub> = for ex. on arm or thumb: v5, v6m, v7a, v7m, etc.\n");
   printf("                            Use --target=help to list supported targets\n");
-  printf("  --target-abi=<abi>        Set the target ABI, e.g. gnu, eabi, gnueabihf, etc. (default: gnu)\n");
+  printf("  --target-abi=<abi>        Set the target ABI, e.g. gnu, eabi, gnueabihf, msvc, etc.\n");
+  printf("                              Default is gnu if target isn't riscv64 or riscv32\n");
+  printf("                              For target riscv64 and riscv32, default is lp64d and ilp32d\n");
   printf("                            Use --target-abi=help to list all the ABI supported\n");
   printf("  --cpu=<cpu>               Set the target CPU (default: host CPU, e.g. skylake)\n");
   printf("                            Use --cpu=help to list all the CPU supported\n");

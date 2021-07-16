@@ -182,6 +182,7 @@ GET_U64_FROM_ADDR(uint32 *addr)
 #define E_MACHINE_MIPS_X   51       /* Stanford MIPS-X */
 #define E_MACHINE_X86_64   62       /* AMD x86-64 architecture */
 #define E_MACHINE_XTENSA   94       /* Tensilica Xtensa Architecture */
+#define E_MACHINE_RISCV    243      /* RISC-V 32/64 */
 #define E_MACHINE_WIN_X86_64 0x8664 /* Windowx x86-64 architecture */
 
 /* Legal values for e_version */
@@ -256,6 +257,9 @@ get_aot_file_target(AOTTargetInfo *target_info,
             break;
         case E_MACHINE_XTENSA:
             machine_type = "xtensa";
+            break;
+        case E_MACHINE_RISCV:
+            machine_type = "riscv";
             break;
         default:
             set_error_buf_v(error_buf, error_buf_size,
@@ -1501,6 +1505,7 @@ do_text_relocation(AOTModule *module,
             symbol_addr = module->code;
         }
         else if (!strcmp(symbol, ".data")
+                 || !strcmp(symbol, ".sdata")
                  || !strcmp(symbol, ".rdata")
                  || !strcmp(symbol, ".rodata")
                  /* ".rodata.cst4/8/16/.." */
